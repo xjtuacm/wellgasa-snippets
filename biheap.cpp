@@ -1,73 +1,64 @@
-// biheap.cpp 二叉大项堆实现
-#include <limits.h>
-using namespace std;
+template<typename T, T* biheap, typename Compare>
+struct BiHeap{
+  int cnt;
+  Compare compare = Compare();
+  BiHeap(int cnt = 0): cnt(cnt){}
 
-const int maxn = 100010; // 最大元素个数
-int biheap[maxn + 1];    // 堆
-int cnt = 0;             // 堆的大小
+  // 辅助函数
+  inline int pre(int x){return x >> 1;}
+  inline int lch(int x){return x << 1;}
+  inline int rch(int x){return (x << 1) + 1;}
 
-// 辅助函数
-inline int pre(int x){return x >> 1;}
-inline int lch(int x){return x << 1;}
-inline int rch(int x){return (x << 1) + 1;}
-inline void down(int n){
-  int v = biheap[n];
-  while (n <= cnt) {
-    int to = INT_MAX;
-    if(lch(n) <= cnt && biheap[lch(n)] > v) to = lch(n);
-    if(rch(n) <= cnt && biheap[rch(n)] > v && biheap[rch(n)] > biheap[lch(n)]) to = rch(n);
-    if(to != INT_MAX){
-      biheap[n] = biheap[to];
-      n = to;
+  // 对节点n进行下降操作
+  void down(int n){
+    T v = biheap[n];
+    while (n <= cnt) {
+      int to = 0;
+      if(lch(n) <= cnt && compare(biheap[lch(n)],v)) to = lch(n);
+      if(rch(n) <= cnt && compare(biheap[rch(n)],v) && compare(biheap[rch(n)],biheap[lch(n)])) to = rch(n);
+      if(to != 0){
+        biheap[n] = biheap[to];
+        n = to;
+      }
+      else{
+        biheap[n] = v;
+        break;
+      }
     }
-    else{
-      biheap[n] = v;
-      break;
+  }
+
+  // 插入
+  void push(const T& x){
+    int p = ++cnt;
+    while(p > 1 && compare(x,biheap[pre(p)])){
+      biheap[p] = biheap[pre(p)];
+      p = pre(p);
     }
+    biheap[p] = x;
   }
-}
 
-// 重新初始化
-inline void init(){
-  cnt = 0;
-}
-
-// 插入
-void insert(int x){
-  int p = ++cnt;
-  while(p > 1 && x > biheap[pre(p)]){
-    biheap[p] = biheap[pre(p)];
-    p = pre(p);
+  // 取堆顶
+  T top(){
+    return biheap[1];
   }
-  biheap[p] = x;
-}
 
-// 删除堆顶
-int pop(){
-  int ans = biheap[1];
-  biheap[1] = biheap[cnt--];
-  down(1);
-  return ans;
-}
-
-// 离线建堆
-void heapify(int n){
-  if(lch(n) > cnt) return;
-  if(lch(n) <= cnt) heapify(lch(n));
-  if(rch(n) <= cnt) heapify(rch(n));
-  down(n);
-}
-
-// 示例: poj1338
-#include <cstdio>
-int main(){
-  scanf("%d", &cnt);
-  for(int i = 1; i <= cnt; i++){
-    scanf("%d", &biheap[i]);
+  // 弹出堆顶
+  void pop(){
+    biheap[1] = biheap[cnt--];
+    down(1);
   }
-  heapify(1);
-  while (cnt) {
-    printf("%d\n", pop());
+
+  // 清空
+  void clear(){
+    cnt = 0;
   }
-  return 0;
-}
+
+  // 离线建堆
+  // 前提: 设置好cnt，并在[1..cnt]中存好值
+  void heapify(int n){
+    if(lch(n) > cnt) return;
+    if(lch(n) <= cnt) heapify(lch(n));
+    if(rch(n) <= cnt) heapify(rch(n));
+    down(n);
+  }
+};
