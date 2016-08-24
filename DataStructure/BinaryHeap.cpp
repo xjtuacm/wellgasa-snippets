@@ -6,6 +6,8 @@
     BinaryHeap:
       T *buffer: 数组首地址 - 1
       int size: 数组长度
+@dependence:
+    bool compare(int a, int b); // 给出比较关系
 @note:
     需要手动指定 buffer, size
     指定 buffer 为 a[] 时 => buffer = a - 1;
