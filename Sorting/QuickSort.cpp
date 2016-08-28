@@ -18,6 +18,8 @@
 @note:
     函数后 保证 A 升序，可重载 < 号，改变顺序
     没有做随机化
+    排序范围: A[p, r]
+        因此对长度为n的数组排序调用: QuickSort(A, 0, n - 1);
 */
 template <class T> void QuickSort(T *A, int p, int r) {
   int i = p, j = r, x = A[(p + r) / 2];
