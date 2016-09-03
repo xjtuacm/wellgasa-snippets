@@ -23,7 +23,7 @@ int Sieve(int n, int *prime, bool *isPrime) {
   memset(isPrime, false, 2);
   memset(isPrime + 2, true, n - 2);
   // sieve
-  for (int i = 2; i < n; i++) {
+  for (int i = 0; i <= n; i++) {
     if (isPrime[i]) {
       prime[cnt++] = i;
     }
