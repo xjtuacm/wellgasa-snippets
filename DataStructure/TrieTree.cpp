@@ -25,8 +25,8 @@
     [void] clear(): 清空字典树
 @note:
     在全局变量中静态定义字典树实例以保证初始化
-    node[0] 是根节点
-    size 不包含根节点
+    node[1] 是根节点
+    size 包含根节点
 */
 #define Charset 26
 #define Capacity 1000000
@@ -46,8 +46,9 @@ struct TrieTree {
     SateliteData;
   } node[Capacity];
   int size;
+  TrieTree() { size = 1; }
   void insert(StringType *S) {
-    int cur = 0;
+    int cur = 1;
     for (int i = 0; !IterEnd(i); i++) {
       if (node[cur].next[order(S[i])] == 0) {
         node[cur].next[order(S[i])] = ++size;
@@ -59,7 +60,7 @@ struct TrieTree {
     InsertFinish(cur);
   }
   void find(StringType *S) {
-    int cur = 0;
+    int cur = 1;
     for (int i = 0; !IterEnd(i); i++) {
       if (node[cur].next[order(S[i])] == 0) {
         NotFound();
@@ -71,6 +72,6 @@ struct TrieTree {
   }
   void clear() {
     memset(this, 0, (size + 1) * sizeof(TrieNode));
-    size = 0;
+    size = 1;
   }
 };
