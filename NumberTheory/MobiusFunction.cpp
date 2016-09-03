@@ -1,34 +1,33 @@
 /*
-@title: 线性筛法求莫比乌斯函数
+@title: 筛法求莫比乌斯函数
 @description:
     O(n)预处理 [1, n] 范围内的莫比乌斯函数的值
 @arguments:
-    n: 数据规模
+    n: 数据区间 [1, n]
     mobius: 莫比乌斯函数缓存首地址 [alloc only]
+        writable in [1, n]
     prime: 素数缓存首地址 [alloc only]
+        writable in [0, π(n))
     isPrime: 判断素数缓存首地址 [alloc only]
+        writable in [0, n]
 @performance:
     Time: O(n)
     Space: O(n)
-@range:
-    |mobius| >= n + 1
-    |isPrime| >= n + 1
 @dependence:
     memset in "cstring"
 @note:
-    这可以顺便筛出素数
     mobius 是一个数论函数，因此不会也不能访问 mobius[0]
     isPrime 也是一个数论函数，因此不会也不能访问 isPrime[0]
 */
 
-void LinearSieveMobius(int n, int *mobius, int *prime, bool *isPrime) {
+void Sieve(int n, int *mobius, int *prime, bool *isPrime) {
   // initialize
   int cnt = 0;
   memset(isPrime, false, 2);
   memset(isPrime + 2, true, n - 2);
   mobius[1] = 1;
   // sieve
-  for (int i = 2; i < n; i++) {
+  for (int i = 0; i <= n; i++) {
     if (isPrime[i]) {
       prime[cnt++] = i;
       mobius[i] = -1;
