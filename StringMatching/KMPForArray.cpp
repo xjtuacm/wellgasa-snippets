@@ -1,9 +1,11 @@
 /*
- * @title: KMP 字符串匹配
+ * @title: KMP 串匹配
  * @description: KMP 字符串匹配算法
  * @arguments:
  *  S: 源串的首指针
+ *  n: 源串的长度
  *  P: 模式串的首指针
+ *  m: 模式串的长度
  *  N: Next 数组 [alloc only]
  * @performance:
  *  Time: O(|P| + |S|)
@@ -11,12 +13,11 @@
  *    Extra: O(|N|)
  * @dependence:
  *  Matched(int index);
- * @note: S 与 P 的终止符为 '\0'
  */
 
-void KMPInit(char *P, int *N) {
+void KMPInit(int *P, int n, int *N) {
   int k = N[0] = 0;
-  for (int i = 1; P[i] != '\0'; i++) {
+  for (int i = 1; i < n; i++) {
     while (k && P[k] != P[i]) {
       k = N[k - 1];
     }
@@ -27,16 +28,16 @@ void KMPInit(char *P, int *N) {
   }
 }
 
-void KMP(char *S, char *P, int *N) {
+void KMP(int *S, int n, int *P, int m, int *N) {
   int k = 0;
-  for (int i = 0; S[i] != '\0'; i++) {
+  for (int i = 0; i < n; i++) {
     while (k && P[k] != S[i]) {
       k = N[k - 1];
     }
     if (P[k] == S[i]) {
       k++;
     }
-    if (P[k] == '\0') {
+    if (k == m) {
       Matched(i);
       k = N[k - 1];
     }
