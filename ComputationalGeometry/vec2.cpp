@@ -66,7 +66,7 @@ struct vec2{
   // 凸包排序
   bool operator< (const vec2& p2) const{
     if(sgn(x - p2.x) == -1) return true;
-    else if(sgn(x - p2.x) == 0 && sgn(y - p2.y == -1)) return true;
+    else if(sgn(x - p2.x) == 0 && sgn(y - p2.y) == -1) return true;
     else return false;
   }
 };
