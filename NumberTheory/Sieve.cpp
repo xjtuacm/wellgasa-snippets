@@ -28,7 +28,7 @@ int Sieve(int n, int *prime, bool *isPrime) {
       prime[cnt++] = i;
     }
     for (int j = 0; j < cnt; j++) {
-      int next = i * prime[j];
+      long long next = i * prime[j]; // Keep from overflow
       if (next > n) {
         break;
       }
